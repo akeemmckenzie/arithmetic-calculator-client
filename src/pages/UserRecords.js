@@ -14,7 +14,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
     } else {
       const fetchUserData = async () => {
         try {
-          const response = await fetch("http://localhost:8000/api/v1/user/", {
+          const response = await fetch("https://arithmetic-calculator.herokuapp.com/api/v1/user/", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
