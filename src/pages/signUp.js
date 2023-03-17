@@ -12,7 +12,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/signup/', {
+      const response = await axios.post('https://arithmetic-calculator.herokuapp.com/api/v1/signup/', {
         username,
         password,
       });

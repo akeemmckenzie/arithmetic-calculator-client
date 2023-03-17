@@ -25,7 +25,7 @@ const NewOperation = ({ isLoggedIn }) => {
     if (!isLoggedIn) {
       navigate("/");
     } else {
-      fetch("http://localhost:8000/api/v1/user/", {
+      fetch("https://arithmetic-calculator.herokuapp.com/api/v1/user/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -51,7 +51,7 @@ const NewOperation = ({ isLoggedIn }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/operations${urlMap[operationType]}`,
+        `https://arithmetic-calculator.herokuapp.com/api/v1/operations${urlMap[operationType]}`,
         {
           method: "POST",
           headers: {
