@@ -34,7 +34,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
     
     const fetchRecords = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v1/records/", {
+        const response = await fetch("https://arithmetic-calculator.herokuapp.com/api/v1/records/", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
