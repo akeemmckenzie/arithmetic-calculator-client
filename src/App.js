@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import NewOperation from './pages/NewOperation';
+import SignUp from './pages/signUp';
+import UserRecords from './pages/UserRecords';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+  
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/new-operation" element={<NewOperation isLoggedIn={isLoggedIn} />} />
+          <Route path="/user-records" element={<UserRecords isLoggedIn={isLoggedIn} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
+
+
+
+
+
+  
+           
+
