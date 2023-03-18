@@ -66,7 +66,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
     if (isLoggedIn) {
       fetchRecords();
     }
-  }, [isLoggedIn, navigate, setIsLoggedIn]);
+  }, [isLoggedIn, navigate, setIsLoggedIn, apiUrl]);
 
   const handleDelete = async (recordId) => {
     try {

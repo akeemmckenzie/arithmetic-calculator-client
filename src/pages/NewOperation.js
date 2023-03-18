@@ -26,7 +26,7 @@ const NewOperation = ({ isLoggedIn }) => {
     if (!isLoggedIn) {
       navigate("/");
     } else {
-      fetch(`${apiUrl}/api/v1/user/`, {
+      fetch(`${apiUrl}api/v1/user/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -35,7 +35,7 @@ const NewOperation = ({ isLoggedIn }) => {
         .then((data) => setCredit(data.credit))
         .catch((error) => console.error("Error:", error));
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, apiUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ const NewOperation = ({ isLoggedIn }) => {
 
     try {
       const response = await fetch(
-        `${apiUrl}/api/v1/operations${urlMap[operationType]}`,
+        `${apiUrl}api/v1/operations${urlMap[operationType]}`,
         {
           method: "POST",
           headers: {
