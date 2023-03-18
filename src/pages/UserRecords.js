@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CircularProgress, Typography } from "@mui/material";
+import moment from "moment";
 
 const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
   const [records, setRecords] = useState([]);
@@ -32,7 +33,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
       };
       fetchUserData();
     }
-    
+
     const fetchRecords = async () => {
       try {
         const response = await fetch(`${apiUrl}api/v1/records/`, {
@@ -70,15 +71,12 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleDelete = async (recordId) => {
     try {
-      const response = await fetch(
-        `${apiUrl}api/v1/records/${recordId}/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}api/v1/records/${recordId}/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       if (response.ok) {
         setRecords((prevRecords) =>
           prevRecords.filter((record) => record.id !== recordId)
@@ -94,6 +92,16 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 150 },
+    {
+      field: "date",
+      headerName: "Date",
+      width: 300,
+      renderCell: (params) => (
+        <Typography>
+          {moment(params.row.date).format("MMM DD, YYYY, h:mm a")}
+        </Typography>
+      ),
+    },
     { field: "operation_type", headerName: "Operation", width: 200 },
     { field: "amount", headerName: "Amount", width: 150 },
     { field: "user_balance", headerName: "User Balance", width: 150 },
@@ -106,11 +114,13 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
       ),
     },
   ];
-  
+
   return (
     <div className="container">
       <h2>User Records</h2>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}
+      >
         <Typography variant="body1" fontWeight="bold" mr={1}>
           Credit:
         </Typography>
@@ -134,7 +144,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
         />
       </div>
     </div>
-  );  
+  );
 };
 
 export default UserRecords;
