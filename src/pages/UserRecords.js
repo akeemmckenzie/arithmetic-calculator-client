@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CircularProgress, Typography } from "@mui/material";
 
 const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -128,6 +128,9 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
           pageSize={10}
           rowsPerPageOptions={[5, 10, 20]}
           disableSelectionOnClick
+          components={{
+            Toolbar: GridToolbar,
+          }}
         />
       </div>
     </div>
