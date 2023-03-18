@@ -8,6 +8,7 @@ function Login({ onLogin, isLoggedIn }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -18,7 +19,7 @@ function Login({ onLogin, isLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://arithmetic-calculator.herokuapp.com/api/v1/login/', {
+      const response = await axios.post(`${apiUrl}api/v1/login/`, {
         username,
         password,
       });

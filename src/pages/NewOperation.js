@@ -20,12 +20,13 @@ const NewOperation = ({ isLoggedIn }) => {
   const [result, setResult] = useState(null);
   const [credit, setCredit] = useState(null);
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     } else {
-      fetch("https://arithmetic-calculator.herokuapp.com/api/v1/user/", {
+      fetch(`${apiUrl}/api/v1/user/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -51,7 +52,7 @@ const NewOperation = ({ isLoggedIn }) => {
 
     try {
       const response = await fetch(
-        `https://arithmetic-calculator.herokuapp.com/api/v1/operations${urlMap[operationType]}`,
+        `${apiUrl}/api/v1/operations${urlMap[operationType]}`,
         {
           method: "POST",
           headers: {

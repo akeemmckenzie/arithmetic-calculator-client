@@ -8,11 +8,12 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://arithmetic-calculator.herokuapp.com/api/v1/signup/', {
+      const response = await axios.post(`${apiUrl}api/v1/signup/`, {
         username,
         password,
       });

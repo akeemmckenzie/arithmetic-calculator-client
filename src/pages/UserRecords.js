@@ -7,6 +7,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
   const [records, setRecords] = useState([]);
   const [credit, setCredit] = useState(null);
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -14,7 +15,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
     } else {
       const fetchUserData = async () => {
         try {
-          const response = await fetch("https://arithmetic-calculator.herokuapp.com/api/v1/user/", {
+          const response = await fetch(`${apiUrl}api/v1/user/`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -34,7 +35,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
     
     const fetchRecords = async () => {
       try {
-        const response = await fetch("https://arithmetic-calculator.herokuapp.com/api/v1/records/", {
+        const response = await fetch(`${apiUrl}api/v1/records/`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +71,7 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
   const handleDelete = async (recordId) => {
     try {
       const response = await fetch(
-        `https://arithmetic-calculator.herokuapp.com/api/v1/records/${recordId}/`,
+        `${apiUrl}api/v1/records/${recordId}/`,
         {
           method: "POST",
           headers: {
