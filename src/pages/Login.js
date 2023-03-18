@@ -26,7 +26,7 @@ function Login({ onLogin, isLoggedIn }) {
       if (response.data) {
         localStorage.setItem('token', response.data.access);
         onLogin();
-        navigate('new-operation');
+        navigate('/new-operation');
       } else {
         setError('Unable to log in. Please try again.');
       }

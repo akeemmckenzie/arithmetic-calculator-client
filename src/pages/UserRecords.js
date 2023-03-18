@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { CircularProgress, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  IconButton,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import { FaTrashAlt } from "react-icons/fa";
 import moment from "moment";
 
 const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
   const [records, setRecords] = useState([]);
   const [credit, setCredit] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -70,23 +83,42 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
   }, [isLoggedIn, navigate, setIsLoggedIn, apiUrl]);
 
   const handleDelete = async (recordId) => {
+    setRecordToDelete(recordId);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setRecordToDelete(null);
+  };
+
+  const handleModalDelete = async () => {
     try {
-      const response = await fetch(`${apiUrl}api/v1/records/${recordId}/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        `${apiUrl}api/v1/records/${recordToDelete}/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (response.ok) {
         setRecords((prevRecords) =>
-          prevRecords.filter((record) => record.id !== recordId)
+          prevRecords.filter((record) => record.id !== recordToDelete)
         );
+        setModalOpen(false);
+        setRecordToDelete(null);
       } else {
         const data = await response.json();
         console.error("Error deleting record:", data);
+        setModalOpen(true);
+        setRecordToDelete(null);
       }
     } catch (error) {
       console.error("Error deleting record:", error);
+      setModalOpen(true);
+      setRecordToDelete(null);
     }
   };
 
@@ -103,14 +135,21 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
       ),
     },
     { field: "operation_type", headerName: "Operation", width: 200 },
-    { field: "amount", headerName: "Amount", width: 150 },
+    { field: "operation_response", headerName: "Operation Result", width: 200 },
+    { field: "amount", headerName: "Amount Spent", width: 150 },
     { field: "user_balance", headerName: "User Balance", width: 150 },
     {
       field: "delete",
       headerName: "Delete",
       width: 150,
       renderCell: (params) => (
-        <button onClick={() => handleDelete(params.id)}>Delete</button>
+        <IconButton
+          title="Delete Record"
+          onClick={() => handleDelete(params.id)}
+          color="error"
+        >
+          <FaTrashAlt />
+        </IconButton>
       ),
     },
   ];
@@ -143,6 +182,20 @@ const UserRecords = ({ isLoggedIn, setIsLoggedIn }) => {
           }}
         />
       </div>
+      <Dialog open={modalOpen} onClose={handleModalClose}>
+        <DialogTitle>Delete Record</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete(archive) this record?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleModalClose}>Cancel</Button>
+          <Button onClick={handleModalDelete} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
