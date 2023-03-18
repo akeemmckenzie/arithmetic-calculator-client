@@ -5,17 +5,21 @@ import Login from './pages/Login';
 import NewOperation from './pages/NewOperation';
 import SignUp from './pages/signUp';
 import UserRecords from './pages/UserRecords';
+import SplashScreen from './pages/SplashScreen';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
     }
+    setTimeout(() => {
+      setShowSplashScreen(false);
+    }, 3000);
   }, []);
-  
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -29,20 +33,27 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-        <Routes>
-          <Route path="/" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/new-operation" element={<NewOperation isLoggedIn={isLoggedIn} />} />
-          <Route path="/user-records" element={<UserRecords isLoggedIn={isLoggedIn} />} />
-        </Routes>
+        {showSplashScreen ? (
+          <SplashScreen />
+        ) : (
+          <>
+            <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+            <Routes>
+              <Route path="/" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
+              <Route path="/login" element={<Login onLogin={handleLogin} isLoggedIn={isLoggedIn} />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/new-operation" element={<NewOperation isLoggedIn={isLoggedIn} />} />
+              <Route path="/user-records" element={<UserRecords isLoggedIn={isLoggedIn} />} />
+            </Routes>
+          </>
+        )}
       </div>
     </Router>
   );
 }
 
 export default App;
+
 
 
 
