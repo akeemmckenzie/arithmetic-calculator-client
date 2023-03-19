@@ -20,7 +20,7 @@ const SplashScreen = () => {
       <div className="splash-screen" style={splashStyle}>
         <div className="splash-screen-circle" style={circleStyle}>
           <div className="splash-screen-letter" style={letterStyle}>A</div>
-          <div className="splash-screen-letter" style={letterStyle}>R</div>
+          <div className="splash-screen-letter" style={letterStyle}>C</div>
         </div>
         {showTitle && (
           <Typography variant="h4" className="splash-screen-title" style={titleStyle}>
